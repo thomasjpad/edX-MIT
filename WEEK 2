@@ -1,0 +1,175 @@
+L3 PROBLEM 9
+
+start = 0
+end = 100
+print 'Please think of a number between 0 and 100!'
+user = ''
+
+while user != 'c':
+    ans = (start + end) / 2
+    print ('Is your secret number ' +  str(ans) + '?')
+    user = raw_input("Enter 'h' to indicate the guess is too high. Enter 'l' to indicate the guess is too low. Enter 'c' to indicate I guessed correctly. ")
+    if user == 'l':
+        start = ans
+    elif user == 'h':
+        end = ans
+    elif user == 'c':
+        break
+    else:
+        print 'Sorry, I did not understand your input.'
+    ans = start
+print 'Game over. Your secret number was: ' + str((start + end) / 2)
+
+***************************************************************************
+
+L4 PROBLEM 5
+
+def clip(lo, x, hi):
+    '''
+    Takes in three numbers and returns a value based on the value of x.
+    Returns:
+     - lo, when x < lo
+     - hi, when x > hi
+     - x, otherwise
+    '''
+    return min(max(x, lo), hi)
+
+****************************************************************************
+
+L4 PROBLEM 10
+
+def isVowel(char):
+    '''
+    char: a single letter of any case
+
+    returns: True if char is a vowel and False otherwise.
+    '''
+    char = char.lower()
+    if char=='a' or char=='e' or char=='i' or char=='o' or char=='u':
+        return True
+    return False
+    
+*****************************************************************************
+
+L4 PROBLEM 11
+
+def isVowel2(char):
+    '''
+    char: a single letter of any case
+
+    returns: True if char is a vowel and False otherwise.
+    '''
+    vowel = ('a', 'e', 'i', 'o', 'u')
+    char = char.lower()
+    if char in vowel:
+        return True
+    return False
+
+******************************************************************************
+
+                PSET1
+              *********
+
+COUNTING VOWELS
+***************
+count=0
+for char in s:
+    if char == 'a' or char == 'e' or char == 'i' or char == 'o' or char == 'u':
+        count=count+1
+print("Number of vowels: "+ str(count))
+
+
+COUNTING BOBS
+*************
+count=start=0
+f='bob'
+while True:
+    start = s.find(f, start) + 1
+    if start > 0:
+        count+=1
+    else:
+        break
+print count
+
+
+ALPHABETICAL SUBSTRINGS
+***********************
+r=''
+c=''
+for char in s:
+    if(c==''):
+        c=char
+    elif(c[-1]<=char):
+        c+=char
+    elif(c[-1]>char):
+        if(len(r)<len(c)):
+            r=c
+            c=char
+        else:
+            c=char
+if(len(c)>len(r)):
+    r=c
+print(r)
+
+***************************************************************
+
+            PSET 2
+          **********
+
+PROBLEM 1: PAYING THE MINIMUM
+*****************************
+totalPaid=0
+monthInterestRate = annualInterestRate / 12
+monthlyPayment = monthlyPaymentRate*balance
+newBalance= (balance-monthlyPayment) * (1 + monthInterestRate) #newBalance is updated balance
+month=0
+while month<12:
+    month += 1
+    monthlyPayment = (monthlyPaymentRate*balance)
+    totalPaid+=monthlyPayment
+    newBalance=(balance-monthlyPayment)*(1 + monthInterestRate)
+    balance=newBalance
+    print("Month: " + str(month))
+    print("Minimum monthly payment: " + str(round(monthlyPayment,2)))
+    print("Remaining balance: " + str(round(newBalance,2)))
+print("Total paid: "+ str(round(totalPaid,2)))
+print("Remaining balance: "+ str(round(newBalance,2)))
+
+
+PROBLEM 2: PAYING DEBT OFF IN A YEAR
+************************************
+b = balance
+monthlyInterestRate = (annualInterestRate/12)
+minimumMonthlyPayment = 10.00
+month = 0
+while month <= 12:
+    balance = ((balance - minimumMonthlyPayment) * (1 + monthlyInterestRate))
+    month+=1
+    if balance <= 0 and month == 12:
+        break
+    elif balance > 0 and month == 12:
+        balance = b
+        month = 0
+        minimumMonthlyPayment = minimumMonthlyPayment + 10.00
+print str('Lowest Payment: ' + str(round(minimumMonthlyPayment, 2)))
+
+
+PROBLEM 3: USING BISECTION SEARCH TO MAKE THE PROGRAM FASTER
+************************************************************
+payment = (balance * (1 + annualInterestRate/12)**12) / 12
+count = 0
+total = 0
+initialbalance = balance
+while balance > 0:
+    for month in range(1,13):
+        interest = (balance-payment) * (annualInterestRate/12)
+        balance = (balance-payment) * (1+(annualInterestRate/12))
+        finalbalance = balance - total
+        if balance <= 0:
+            break
+    if balance < -0.01 or balance > 0.01:
+        payment = payment + (balance/12)
+        balance = initialbalance
+    total = 0
+print('Lowest Payment: ' + str(round(payment,2)))
+
