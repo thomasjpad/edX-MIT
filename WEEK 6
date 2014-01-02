@@ -1,0 +1,231 @@
+L11 PROBLEM 4
+
+class Coordinate(object):
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+
+    def getX(self):
+        # Getter method for a Coordinate object's x coordinate.
+        # Getter methods are better practice than just accessing an attribute directly
+        return self.x
+
+    def getY(self):
+        # Getter method for a Coordinate object's y coordinate
+        return self.y
+
+    def __str__(self):
+        return '<' + str(self.getX()) + ',' + str(self.getY()) + '>'
+    
+    def __eq__(self, other):
+        assert type(other) == type(self)
+        return self.getX() == other.getX() and self.getY() == other.getY()
+
+    def __repr__(self):
+        return 'Coordinate(' + str(self.getX()) + ', ' + str(self.getY()) + ')'
+
+*******************************************************************************************
+
+L11 PROBLEM 5
+
+class intSet(object):
+    """An intSet is a set of integers
+    The value is represented by a list of ints, self.vals.
+    Each int in the set occurs in self.vals exactly once."""
+
+    def __init__(self):
+        """Create an empty set of integers"""
+        self.vals = []
+
+    def insert(self, e):
+        """Assumes e is an integer and inserts e into self""" 
+        if not e in self.vals:
+            self.vals.append(e)
+
+    def member(self, e):
+        """Assumes e is an integer
+           Returns True if e is in self, and False otherwise"""
+        return e in self.vals
+
+    def remove(self, e):
+        """Assumes e is an integer and removes e from self
+           Raises ValueError if e is not in self"""
+        try:
+            self.vals.remove(e)
+        except:
+            raise ValueError(str(e) + ' not found')
+
+    def __str__(self):
+        """Returns a string representation of self"""
+        self.vals.sort()
+        return '{' + ','.join([str(e) for e in self.vals]) + '}'
+
+    def intersect(self, other):
+        """Assumes other is an intSet
+           Returns a new intSet containing elements that appear in both sets."""
+        # Initialize a new intSet    
+        commonValueSet = intSet()
+        # Go through the values in this set
+        for val in self.vals:
+            # Check if each value is a member of the other set    
+            if other.member(val):
+                commonValueSet.insert(val)
+        return commonValueSet
+
+    def __len__(self):
+        return len(self.vals)
+        
+*******************************************************************************************
+
+L11 PROBLEM 6
+
+class Queue(object):
+
+    def __init__(self):
+        self.qlist = []
+
+    def insert(self, element):
+        self.qlist.append(element)
+
+    def remove(self):
+        if self.qlist == []:
+            raise ValueError()
+        else:
+            element = self.qlist[0]
+            self.qlist.remove(element)
+            return element
+
+*******************************************************************************************
+
+L12 PROBLEM 5
+
+def genPrimes():
+    primes = []
+    last = 1
+    while True:
+        last = last + 1
+        for p in primes:
+            if last % p == 0:
+                break
+        else:
+            primes.append(last)
+            yield last
+
+*******************************************************************************************
+
+                  PSET 6
+                **********
+                
+**********************
+PROBLEM 1: ENCRYPTION
+**********************
+
+def buildCoder(shift):
+    """
+    Returns a dict that can apply a Caesar cipher to a letter.
+    The cipher is defined by the shift value. Ignores non-letter characters
+    like punctuation, numbers, and spaces.
+
+    shift: 0 <= int < 26
+    returns: dict
+    """
+    dict ={}
+    all = string.ascii_uppercase
+    for letter in all:
+        index = all.find(letter)
+        dict[letter] = all[(index + shift) % 26]
+        
+    all = string.ascii_lowercase
+    for letter in all:
+        index = all.find(letter)
+        dict[letter] = all[(index + shift) % 26]
+    return dict
+
+
+**********************
+PROBLEM 1: ENCRYPTION
+**********************
+
+def applyCoder(text, coder):
+    """
+    Applies the coder to the text. Returns the encoded text.
+
+    text: string
+    coder: dict with mappings of characters to shifted characters
+    returns: text after mapping coder chars to original text
+    """
+    cipher = ""
+    for entry in text:
+        if coder.has_key(entry):
+            cipher += coder[entry]
+        else:
+            cipher += entry
+    return cipher
+
+
+**********************
+PROBLEM 1: ENCRYPTION
+**********************
+
+def applyShift(text, shift):
+    """
+    Given a text, returns a new text Caesar shifted by the given shift
+    offset. Lower case letters should remain lower case, upper case
+    letters should remain upper case, and all other punctuation should
+    stay as it is.
+
+    text: string to apply the shift to
+    shift: amount to shift the text (0 <= int < 26)
+    returns: text after being shifted by specified amount.
+    """
+    return applyCoder(text, buildCoder(shift))
+
+
+**********************
+PROBLEM 2: DECRYPTION
+**********************
+
+def findBestShift(wordList, text):
+    """
+    Finds a shift key that can decrypt the encoded text.
+
+    text: string
+    returns: 0 <= int < 26
+    """
+    maxRealWords = 0
+    bestShift = 0
+    encrypt = 0
+    prevMax = 0
+    while encrypt < 26:
+        mystr = applyShift(text, encrypt)
+        mywords = mystr.split(' ')
+        maxRealWords = 0
+        for w in mywords:
+            booleanVal = isWord(wordList, w)
+            if booleanVal:
+                maxRealWords += 1
+        if maxRealWords > prevMax:
+            prevMax = maxRealWords
+            bestShift = encrypt
+        encrypt += 1
+        
+    return bestShift 
+    
+
+**********************
+PROBLEM 2: DECRYPTION
+**********************
+
+def decryptStory():
+    """
+    Using the methods you created in this problem set,
+    decrypt the story given by the function getStoryString().
+    Once you decrypt the message, be sure to include as a comment
+    your decryption of the story.
+
+    returns: string - story in plain text
+    """
+    story = getStoryString();
+    return applyShift( story, findBestShift(loadWords(), story))
+    
+*****************************************************************************************
