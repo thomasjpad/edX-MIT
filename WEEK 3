@@ -1,0 +1,391 @@
+L5 PROBLEM 1
+
+def iterPower(base, exp):
+    '''
+    base: int or float.
+    exp: int >= 0
+ 
+    returns: int or float, base^exp
+    '''
+    result = base
+    if exp == 0:
+        result = 1.0
+        return result
+    else:
+        while exp >1:
+            result = result * base
+            exp -= 1
+        return result
+
+***********************************************************
+
+L5 PROBLEM 2
+
+def recurPower(base, exp):
+    '''
+    base: int or float.
+    exp: int >= 0
+ 
+    returns: int or float, base^exp
+    '''
+    if exp == 0:
+        return 1
+    elif exp == 1:
+        return base
+    else:
+        return base * recurPower(base, exp-1)
+
+*************************************************************
+
+L5 PROBLEM 3
+
+def recurPowerNew(base, exp):
+    '''
+    base: int or float.
+    exp: int >= 0
+
+    returns: int or float; base^exp
+    '''
+    if exp == 0:
+        return 1
+    elif exp > 0 and exp % 2 == 0:
+        return float(recurPowerNew((base * base), (exp/2)))
+    elif exp > 0 and exp % 2 != 0:
+        return float(base * recurPowerNew(base, (exp-1)))
+
+**************************************************************
+
+L5 PROBLEM 4
+
+def gcdIter(a, b):
+    '''
+    a, b: positive integers
+    
+    returns: a positive integer, the greatest common divisor of a & b.
+    '''
+    ans = min(a,b)
+    while (a % ans != 0 or b % ans != 0):
+        ans -= 1
+    return ans
+
+****************************************************************
+
+L5 PROBLEM 5
+
+def gcdRecur(a, b):
+    '''
+    a, b: positive integers
+    
+    returns: a positive integer, the greatest common divisor of a & b.
+    '''
+    if b == 0:
+        return a
+    else:
+        return gcdRecur(b, a % b)
+
+******************************************************************
+
+L5 PROBLEM 6
+
+def lenIter(aStr):
+    '''
+    aStr: a string
+    
+    returns: int, the length of aStr
+    '''
+    c = 0
+    for i in aStr:
+        c += 1
+    return c
+
+******************************************************************
+
+L5 PROBLEM 7
+
+def lenRecur(aStr):
+    '''
+    aStr: a string
+    
+    returns: int, the length of aStr
+    '''
+    if aStr=="":
+        return 0
+    else:
+        return 1 + lenRecur(aStr[1:])
+
+*******************************************************************
+
+L5 PROBLEM 8
+
+def isIn(char, aStr):
+    '''
+    char: a single character
+    aStr: an alphabetized string
+    
+    returns: True if char is in aStr; False otherwise
+    '''
+    mid = len(aStr)/2
+    if aStr == '' or len(aStr) == 1:
+        return char == aStr
+    elif char == aStr[mid]:
+            return True
+    elif char < aStr[mid]:
+        aStr = aStr[: mid]
+        return isIn(char, aStr)
+    else:
+        aStr = aStr[mid + 1:]
+        return isIn(char, aStr)
+
+********************************************************************
+
+L5 PROBLEM 9
+
+def semordnilap(str1, str2):
+    '''
+    str1: a string
+    str2: a string
+    
+    returns: True if str1 and str2 are semordnilap;
+             False otherwise.
+    '''
+    if len(str1) != len(str2):
+        return False
+    elif len(str1) == 1:
+        return False
+    elif len(str1) == 2:
+        if(str1[0] == str2[1]):
+            if(str1[1] == str2[0]):
+                if(str1[0] != str1[1]):
+                    return True
+        return False
+    elif str1[0] == str2[-1]:
+        testequalvar1 = True
+        if semordnilap(str1[1:], str2[:-1]):
+            if str1 == str2:
+                testequalvar1 = False
+        else:
+            testequalvar1 = False
+        testequalvar2 = True
+        if semordnilap(str2[1:], str1[:-1]):
+            if str1 == str2:
+                testequalvar2 = False
+        else:
+            testequalvar2 = False
+        if testequalvar1 or testequalvar2:
+            return True
+        return False
+    else:
+        return False
+
+*******************************************************************
+
+L6 PROBLEM 2
+
+def oddTuples(aTup):
+    '''
+    aTup: a tuple
+    
+    returns: tuple, every other element of aTup. 
+    '''
+    return aTup[0::2]
+
+********************************************************************
+
+L6 PROBLEM 7A
+
+def pos(a):
+    if a<0:
+        return -a
+    else:
+        return a
+
+applyToEach(testList, pos)
+
+
+L6 PROBLEM 7B
+
+def inc(a):
+    return a+1
+applyToEach(testList, inc)
+
+
+L6 PROBLEM 7C
+
+def sqr(a):
+    return a*a
+applyToEach(testList, sqr)
+
+*****************************************************************
+
+L6 PROBLEM 10
+
+def howMany(aDict):
+    '''
+    aDict: A dictionary, where all the values are lists.
+
+    returns: int, how many values are in the dictionary.
+    '''
+    count = 0
+    for i in aDict:
+     count = count + len(aDict[i])
+    return count
+
+******************************************************************
+
+L6 PROBLEM 11
+
+def biggest(aDict):
+    '''
+    aDict: A dictionary, where all the values are lists.
+
+    returns: The key with the largest number of values associated with it
+    '''
+    result = None
+    biggestValue = 0
+    for key in aDict.keys():
+        if len(aDict[key]) >= biggestValue:
+            result = key
+            biggestValue = len(aDict[key])
+    return result
+
+******************************************************************
+
+                    PSET3
+                  *********
+
+*******************
+RADIATION EXPOSURE
+*******************
+def radiationExposure(start, stop, step):
+    '''
+    Computes and returns the amount of radiation exposed
+    to between the start and stop times. Calls the 
+    function f (defined for you in the grading script)
+    to obtain the value of the function at any point.
+ 
+    start: integer, the time at which exposure begins
+    stop: integer, the time at which exposure ends
+    step: float, the width of each rectangle. You can assume that
+      the step size will always partition the space evenly.
+
+    returns: float, the amount of radiation exposed to 
+      between start and stop times.
+    '''
+    import numpy as np
+
+    radiation = 0.0
+
+    for i in np.arange(start, stop, step):
+        if stop == 0:
+            return 0
+        if stop == 1:
+            return f(i)*step
+        else:
+            radiation += f(i)*step
+    return radiation
+
+
+**************************************
+HANGMAN PART 1: IS THE WORD GUESSED?
+*************************************
+
+def isWordGuessed(secretWord, lettersGuessed):
+    '''
+    secretWord: string, the word the user is guessing
+    lettersGuessed: list, what letters have been guessed so far
+    returns: boolean, True if all the letters of secretWord are in lettersGuessed;
+      False otherwise
+    '''
+    for i in lettersGuessed:
+        secretWord = secretWord.replace(i, '')
+    if secretWord:
+        return False
+    else:
+        return True
+
+
+******************************
+PRINTING OUT THE USER'S GUESS
+******************************
+
+def getGuessedWord(secretWord, lettersGuessed):
+    '''
+    secretWord: string, the word the user is guessing
+    lettersGuessed: list, what letters have been guessed so far
+    returns: string, comprised of letters and underscores that represents
+      what letters in secretWord have been guessed so far.
+    '''
+    for i in secretWord:
+        if i not in lettersGuessed:
+            secretWord = secretWord.replace(i, '_')
+    return secretWord
+
+
+***********************************
+PRINTING OUT ALL AVAILABLE LETTERS
+***********************************
+
+def getAvailableLetters(lettersGuessed):
+    '''
+    lettersGuessed: list, what letters have been guessed so far
+    returns: string, comprised of letters that represents what letters have not
+      yet been guessed.
+    '''
+    result = string.ascii_lowercase
+    for i in lettersGuessed:
+        result = result.replace(i, '')
+    return result
+
+
+*************************
+HANGMAN PART 2: THE GAME
+*************************
+
+def hangman(secretWord):
+    '''
+    secretWord: string, the secret word to guess.
+
+    Starts up an interactive game of Hangman.
+
+    * At the start of the game, let the user know how many 
+      letters the secretWord contains.
+
+    * Ask the user to supply one guess (i.e. letter) per round.
+
+    * The user should receive feedback immediately after each guess 
+      about whether their guess appears in the computers word.
+
+    * After each round, you should also display to the user the 
+      partially guessed word so far, as well as letters that the 
+      user has not yet guessed.
+
+    Follows the other limitations detailed in the problem write-up.
+    '''
+    guesses_left = 8
+    lettersGuessed = []
+    print 'Welcome to the game, Hangman!'
+    print 'I am thinking of a word that is %s letters long.' % (len(secretWord))
+
+    while guesses_left >= 0:
+        print '-------------'
+        if isWordGuessed(secretWord, lettersGuessed):
+            guesses_left = -1
+            print 'Congratulations, you won!'
+        elif guesses_left == 0:
+            guesses_left = -1
+            print 'Sorry, you ran out of guesses. The word was %s.' % (secretWord)
+        else:
+            print 'You have %s guesses left.' % (guesses_left)
+            print 'Available letters: %s' % (getAvailableLetters(lettersGuessed))
+            guess = raw_input('Please guess a letter:').lower()
+            if guess in lettersGuessed:
+                print "Oops! You've already guessed that letter: %s" % (getGuessedWord(secretWord, lettersGuessed))
+            elif guess in secretWord:
+                lettersGuessed.append(guess)
+                print 'Good guess: %s' % (getGuessedWord(secretWord, lettersGuessed))
+            else:
+                lettersGuessed.append(guess)
+                guesses_left -= 1
+                print "Oops! That letter is not in my word: %s" % (getGuessedWord(secretWord, lettersGuessed))
+
+****************************************************************************************************************
